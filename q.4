@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+
+class Distance {
+private:
+    int meters;
+    int centimeters;
+    int millimeters;
+
+    // funtion for convert mm to cmm and m for no unit error
+    void normalize() {
+        if (millimeters >= 10) {
+            centimeters += millimeters / 10;
+            millimeters %= 10;
+        }
+        if (centimeters >= 100) {  //condition for cm to m
+            meters += centimeters / 100;
+            centimeters %= 100;
+        }
+        if (millimeters < 0) {
+            int borrow = (abs(millimeters) + 9) / 10;
+            centimeters -= borrow;
+            millimeters += borrow * 10;
+        }
+        if (centimeters < 0) {//condition for  where centimeters is negative then it will borrow 1 in substract.
+            int borrow = (abs(centimeters) + 99) / 100;
+            meters -= borrow;
+            centimeters += borrow * 100;
+        }
+    }
+
+public:
+    // Constructor
+    Distance(int m = 0, int cm = 0, int mm = 0) 
+        : meters(m), centimeters(cm), millimeters(mm) {
+        normalize();
+    }
+
+    // Overloaded + operator for addition
+    Distance operator+(const Distance &d) const {
+        return Distance(meters + d.meters, 
+                        centimeters + d.centimeters, 
+                        millimeters + d.millimeters);
+    }
+
+    // Overloaded - operator for subtraction
+    Distance operator-(const Distance &d) const {
+        return Distance(meters - d.meters, 
+                        centimeters - d.centimeters, 
+                        millimeters - d.millimeters);
+    }
+
+    // Function to display the distance
+    void display() const {
+        cout << meters << " meters, " 
+             << centimeters << " centimeters, " 
+             << millimeters << " millimeters" << endl;
+    }
+};
+
+int main() {
+    Distance d1(2, 150, 15); // 2 meters, 150 centimeters, 15 millimeters
+    Distance d2(1, 75, 5);   // 1 meter, 75 centimeters, 5 millimeters
+
+    Distance d3 = d1 + d2;   // Adding two distances
+    Distance d4 = d1 - d2;   // Subtracting two distances
+
+    cout << "Distance 1: ";
+    d1.display();
+    cout << "Distance 2: ";
+    d2.display();
+    cout << "After addition: ";
+    d3.display();
+    cout << "After subtraction: ";
+    d4.display();
+
+    return 0;
+}
