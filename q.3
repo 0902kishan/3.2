@@ -1,16 +1,16 @@
 #include <iostream>
 using namespace std;
 
-// Base class for first complex number
+// Base class that asks the user to enter a complex number
 class BaseComplex {
 protected:
     double real1, imag1; // Real and imaginary parts of the base complex number
 
 public:
-    // Constructor to initialize the complex number from 0
+    // Constructor to initialize the complex number to 0
     BaseComplex() : real1(0), imag1(0) {}
 
-    // function to get a complex number from the user
+    // Function to get a complex number from the user
     void inputComplex() {
         cout << "Enter the real part of the base complex: ";
         cin >> real1;
@@ -18,12 +18,12 @@ public:
         cin >> imag1;
     }
 
-    // function to display the base complex number in a + bi format
-    void displayComplex() {
-        cout << "Complex number: " << real1 << " + " << imag1 << "i" << endl;
+    // Function to display the base complex number in a + bi format
+    void displayComplex() const {
+        cout << real1 << " + " << imag1 << "i" << endl;
     }
 
-    // Friend class to allow FriendComplex access to protected members
+    // Grant friendship to the FriendComplex class
     friend class FriendComplex;
 };
 
@@ -33,10 +33,10 @@ private:
     double real2, imag2; // Real and imaginary parts of the derived complex number
 
 public:
-    // Constructor for initializing the derived complex number to zero
+    // Constructor to initialize the derived complex number to 0
     DerivedComplex() : real2(0), imag2(0) {}
 
-    // function to get the derived complex number from the user
+    // Function to get the derived complex number from the user
     void inputDerivedComplex() {
         cout << "Enter the real part of the derived complex: ";
         cin >> real2;
@@ -44,28 +44,25 @@ public:
         cin >> imag2;
     }
 
-    // function to add the derived complex number to the base complex number
+    // Function to add the derived complex number to the base complex number
     void addComplex() {
-        real1 += real2; // Add the real parts
-        imag1 += imag2; // Add the imaginary parts
-        cout << "After addition, ";
-        displayComplex(); // Display the updated base complex number
+        cout << "After addition: ";
+        double sumReal = real1 + real2; // Add real parts
+        double sumImag = imag1 + imag2; // Add imaginary parts
+        cout << sumReal << " + " << sumImag << "i" << endl;
     }
 
-    // Friend class declaration to allow FriendComplex access to private members
+    // Grant friendship to the FriendComplex class
     friend class FriendComplex;
 };
 
-// Friend class that calculates the difference between the base complex number and the derived complex number
+// Friend class to the derived class that calculates the difference
 class FriendComplex {
 public:
-    // function to calculate and display the difference
+    // Function to calculate and display the difference
     void calculateDifference(const BaseComplex &base, const DerivedComplex &derived) {
-        // Difference in the real and imaginary parts
-        double realDiff = base.real1 - derived.real2;
-        double imagDiff = base.imag1 - derived.imag2;
-
-        // Display the calculated difference
+        double realDiff = base.real1 - derived.real2; // Difference of real parts
+        double imagDiff = base.imag1 - derived.imag2; // Difference of imaginary parts
         cout << "Difference between base complex and derived complex: ";
         cout << realDiff << " + " << imagDiff << "i" << endl;
     }
@@ -73,9 +70,9 @@ public:
 
 int main() {
     // Create objects of the classes
-    BaseComplex base;          // For the base complex number
-    DerivedComplex derived;    // For the derived complex number
-    FriendComplex friendCalc;  // For calculating the difference
+    BaseComplex base;          // Base complex number
+    DerivedComplex derived;    // Derived complex number
+    FriendComplex friendCalc;  // Friend class to calculate the difference
 
     // Step 1: Input the base complex number
     base.inputComplex();
@@ -83,14 +80,11 @@ int main() {
     // Step 2: Input the derived complex number
     derived.inputDerivedComplex();
 
-    // Step 3: Store the original base state for later difference calculation
-    BaseComplex originalBase = base;
-
-    // Step 4: Add the base and derived complex numbers
+    // Step 3: Add the base and derived complex numbers
     derived.addComplex();
 
-    // Step 5: Calculate and display the difference using the original base state
-    friendCalc.calculateDifference(originalBase, derived);
+    // Step 4: Calculate and display the difference
+    friendCalc.calculateDifference(base, derived);
 
     return 0;
 }
