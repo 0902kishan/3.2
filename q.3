@@ -1,0 +1,93 @@
+#include <iostream>
+using namespace std;
+
+// Base class for first complex number
+class BaseComplex {
+protected:
+    double real1, imag1; // Real and imaginary parts of the base complex number
+
+public:
+    // Constructor to initialize the complex number from 0
+    BaseComplex() : real1(0), imag1(0) {}
+
+    // function to get a complex number from the user
+    void inputComplex() {
+        cout << "Enter the real part of the base complex : ";
+        cin >> real1;
+        cout << "Enter the imaginary part of the base complex: ";
+        cin >> imag1;
+    }
+
+    // function to display the base complex number in a + bi format
+    void displayComplex() {
+        cout << "Complex number: " << real1 << " + " << imag1 << "i" << endl;
+    }
+
+    // Friend class to allow FriendComplex(will use later) access to protected members
+    friend class FriendComplex;
+};
+
+// Derived class that adds its own complex number to the base complex number
+class DerivedComplex : public BaseComplex {
+private:
+    double real2, imag2; // Real and imaginary parts of the derived complex number
+
+public:
+    // Constructor for initalise the derived complex number to zero
+    DerivedComplex() : real2(0), imag2(0) {}
+
+    // function to get the derived complex number from the user
+    void inputDerivedComplex() {
+        cout << "Enter the real part of the derived complex : ";
+        cin >> real2;
+        cout << "Enter the imaginary part of the derived complex : ";
+        cin >> imag2;
+    }
+
+    // function to add the derived complex number to the base complex number
+    void addComplex() {
+        real1 += real2; // Add the real parts
+        imag1 += imag2; // Add the imaginary parts
+        cout << "After add, ";
+        displayComplex(); // Display the updated base complex number
+    }
+
+    // Friend class declaration to allow FriendComplex access to private members
+    friend class FriendComplex;
+};
+
+// Friend class that calculates the difference between the base complex number and the derived complex number
+class FriendComplex {
+public:
+    // function to calculate and display the difference
+    void calculateDifference(const BaseComplex &base, const DerivedComplex &derived) {
+        // Difference in the real and imaginary parts
+        double realDiff = base.real1 - derived.real2;
+        double imagDiff = base.imag1 - derived.imag2;
+
+        // Display the calculated difference
+        cout << "Difference between base complex and derived complex: ";
+        cout << realDiff << " + " << imagDiff << "i" << endl;
+    }
+};
+
+int main() {
+    // Create objects of the classes
+    BaseComplex base;          // For the base complex number
+    DerivedComplex derived;    // For the derived complex number
+    FriendComplex friendCalc;  // For calculating the difference
+
+    // Step 1: Input the base complex number
+    base.inputComplex();
+
+    // Step 2: Input the derived complex number
+    derived.inputDerivedComplex();
+
+    // Step 3: Add the base and derived complex numbers
+    derived.addComplex();
+
+    // Step 4: Calculate and display the difference
+    friendCalc.calculateDifference(base, derived);
+
+    return 0;
+}
