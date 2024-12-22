@@ -2,60 +2,43 @@
 using namespace std;
 
 // Base class: Shape
-// Represents a generic shape. Other shapes will inherit from this class.
 class Shape {
 public:
-    virtual void display() const = 0; // Pure virtual function to display shape details
-    virtual ~Shape() {}              // Virtual destructor for cleanup
+    virtual void display() const = 0; // Pure virtual function
+    virtual ~Shape() {}              // Virtual destructor
 };
 
 // Rectangle class: Derived from Shape
-// Represents a rectangle with length and width.
 class Rectangle : public Shape {
 protected:
-    double length;  // Length of the rectangle
-    double width;   // Width of the rectangle
+    double length, width; // Length and width of the rectangle
 
 public:
-    // Constructor: Initialize the rectangle's dimensions
     Rectangle(double l, double w) : length(l), width(w) {}
 
-    // Override the display function to show rectangle details
     void display() const override {
         cout << "Rectangle: length = " << length << ", width = " << width << endl;
     }
 };
 
 // Square class: Derived from Rectangle
-// A square is a rectangle with equal length and width.
 class Square : public Rectangle {
 public:
-    // Constructor: A square has equal length and width
     Square(double side) : Rectangle(side, side) {}
 
-    // Override the display function to show square details
     void display() const override {
         cout << "Square: side = " << length << endl;
     }
-
-    // A method to clone the Square object
-    Square* clone() const {
-        return new Square(*this); // Create a copy of the current square
-    }
 };
 
-// Main function: Program entry point
 int main() {
-    // Create a Square object
-    Square square(5.0); // Create a square with side length 5
-    square.display();   // Display the square's details
+    // Create and display a Square object
+    Square square(5.0);
+    square.display();
 
-    // Clone the Square object
-    Square* clonedSquare = square.clone(); // Create a copy of the square
-    clonedSquare->display();               // Display the cloned square's details
+    // Copy the square directly using the default copy constructor
+    Square copiedSquare = square; // Object is directly copied
+    copiedSquare.display();
 
-    // Clean up memory to avoid memory leaks
-    delete clonedSquare; // Delete the cloned square
-
-    return 0; // Program ends
+    return 0;
 }
